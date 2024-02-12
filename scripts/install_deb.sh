@@ -64,21 +64,21 @@ function install_step_install_apps
 {
     update_packages
 
-	#install Visual Studio Code:
-        echo -e "Installing Visual Studio Code..."
-	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-	sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
-	sudo apt update
-	sudo apt install code
+    # Install Visual Studio Code
+    echo -e "${CYAN}Installing Visual Studio Code...${NC}"
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+    sudo apt update
+    sudo apt install code
 
-    #install other apps
+    # Install other apps
     apps=(mc passwd bashtop glances bpytop snap nmap doublecmd-gtk mate-system-monitor)
     for app in "${apps[@]}"; do
-        echo -e "Installing $app..."
+        echo -e "${CYAN}Installing $app...${NC}"
         sudo apt-get install -y $app
     done
-    echo -e "Applications installed successfully."
+    echo -e "${GREEN}Finished installing Applications.${NC}"
 }
 
 # Function to install Wine
@@ -94,51 +94,65 @@ function install_step_install_wine
 # Function to configure SSH server
 function configure_ssh_server 
 {
-    ssh-keygen -t rsa
-    sudo sed -i 's/#Port 22/Port 3444/' /etc/ssh/sshd_config
-    sudo systemctl restart ssh
-    echo -e "SSH server configured. Port set to 3444."
+    if ssh-keygen -t rsa && \
+       sudo sed -i 's/#Port 22/Port 3444/' /etc/ssh/sshd_config && \
+       sudo systemctl restart ssh; then
+        echo -e "${GREEN}SSH server configured. Port set to 3444.${NC}"
+    else
+        echo -e "${RED}Error: SSH server configuration failed.${NC}"
+    fi
 }
 
 # Function to install LAMB stack
 function install_lamb_stack 
 {
-    sudo apt-get install -y apache2 mysql-server php libapache2-mod-php
-    sudo systemctl enable apache2
-    sudo systemctl start apache2
-    sudo apt-get install -y mailutils
-    # Additional configuration for email setup goes here
-    echo -e "LAMB stack installed successfully."
+    if sudo apt-get install -y apache2 mysql-server php libapache2-mod-php && \
+       sudo systemctl enable apache2 && \
+       sudo systemctl start apache2 && \
+       sudo apt-get install -y mailutils; then
+        echo -e "${GREEN}LAMB stack installed successfully.${NC}"
+    else
+        echo -e "${RED}Error: LAMB stack installation failed.${NC}"
+    fi
 }
 
 # Function to install additional development/administration tools
-function install_additional_tools {
-    sudo apt-get install -y gcc perl git qtcreator arduino python
-    # Additional development tools installation goes here
-    echo -e "Additional development/administration tools installed successfully."
+function install_additional_tools 
+{
+    if sudo apt-get install -y gcc perl git qtcreator arduino python; then
+        echo -e "${GREEN}Additional development/administration tools installed successfully.${NC}"
+    else
+        echo -e "${RED}Error: Installation of additional tools failed.${NC}"
+    fi
 }
 
 # Function to configure security
-function configure_security {
-    sudo apt-get install -y iptables
+function configure_security 
+{
     # Configure iptables
     # Open ports for mail, 80, 443, ssh
-    sudo iptables -A INPUT -p tcp --dport 25 -j ACCEPT
-    sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-    sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-    sudo iptables -A INPUT -p tcp --dport 3444 -j ACCEPT
-    sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
     # Install and configure fail2ban
-    sudo apt-get install -y fail2ban
-    # Additional security configurations go here
-    echo -e "Security configuration completed successfully."
+    if sudo apt-get install -y iptables && \
+       sudo iptables -A INPUT -p tcp --dport 25 -j ACCEPT && \
+       sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT && \
+       sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT && \
+       sudo iptables -A INPUT -p tcp --dport 3444 -j ACCEPT && \
+       sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT && \
+       sudo apt-get install -y fail2ban; then
+        echo -e "${GREEN}Security configuration completed successfully.${NC}"
+    else
+        echo -e "${RED}Error: Security configuration failed.${NC}"
+    fi
 }
 
 # Function to install VMWare Guest Additions
 function install_step_install_vmware_guest_additions 
 {
-    sudo apt-get install -y open-vm-tools-desktop
-    echo -e "VMWare Guest Additions installed successfully."
+    if sudo apt-get install -y open-vm-tools-desktop; then
+        echo -e "${GREEN}VMWare Guest Additions installed successfully.${NC}"
+    else
+        echo -e "${RED}Error: Installation of VMWare Guest Additions failed.${NC}"
+    fi
 }
 
 
