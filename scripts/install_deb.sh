@@ -233,7 +233,7 @@ function show_menu
     echo -e "${YELLOW}${BOLD}3)${NC} Install ${BOLD}system updates${NC} + ${BOLD}applications${NC} (mc, bashtop, glances, bpytop, snap, nmap, mate-system-monitor)"
     echo -e "${YELLOW}${BOLD}4)${NC} Install ${BOLD}Wine${NC}"  # Yellow and bold text for menu items
     echo -e "${YELLOW}${BOLD}5)${NC} Configure ${BOLD}SSH${NC} server (generate keys, set port 3444)"
-    echo -e "${YELLOW}${BOLD}6)${NC} Install ${BOLD}LAMB${NC} (Apache + MySQL + Email + PHP + domain h2.vladonai.com)"
+    echo -e "${YELLOW}${BOLD}6)${NC} Install ${BOLD}LAMB${NC} (Apache + MySQL + Email + PHP + domain $DOMAIN)"
     echo -e "${YELLOW}${BOLD}7)${NC} Install additional ${BOLD}development${NC}/administration tools (GCC, Python, Perl, Git, QT Creator, Arduino development tools, visual GIT tools)"
     echo -e "${YELLOW}${BOLD}8)${NC} ${BOLD}Configure security${NC} (iptables firewall, open ports for mail, 80, 443, ssh, fail2ban)"
     echo -e "${YELLOW}${BOLD}9)${NC} Install ${BOLD}VMWare${NC} Guest Additions"
