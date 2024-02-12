@@ -5,27 +5,39 @@
 
 
 # Function to update package lists
-function update_packages {
+function update_packages 
+{
     sudo apt update
 }
 
 # Function to display the menu
-function show_menu {
-    echo -e "\e[1;33mChoose what you want to do:\e[0m"  # Yellow text for the menu title
-    echo -e "\e[1;36m1) Execute all steps\e[0m"        # Cyan text for menu items
-    echo -e "\e[1;36m2) Add user to sudoers\e[0m"
-    echo -e "\e[1;36m3) Install system updates and applications (mc, bashtop, glances, bpytop, snap, nmap, code, doublecmd, mate-system-monitor)\e[0m"
-    echo -e "\e[1;36m4) Install Wine\e[0m"
-    echo -e "\e[1;36m5) Configure SSH server (generate keys, set port 3444)\e[0m"
-    echo -e "\e[1;36m6) Install LAMB (Apache + MySQL + Email + PHP + domain h2.vladonai.com)\e[0m"
-    echo -e "\e[1;36m7) Install additional development/administration tools (GCC, Python, Perl, Git, QT Creator, Arduino development tools, visual GIT tools)\e[0m"
-    echo -e "\e[1;36m8) Configure security (iptables firewall, open ports for mail, 80, 443, ssh, fail2ban)\e[0m"
-    echo -e "\e[1;36m9) Install VMWare Guest Additions\e[0m"
-    echo -e "\e[1;36mq) Exit\e[0m"
+function show_menu 
+{
+    # Color codes
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[0;33m'
+    BLUE='\033[0;34m'
+    BOLD='\033[1m'
+    NC='\033[0m' # No Color
+
+    # Menu items
+    echo -e "${BLUE}${BOLD}Choose what you want to do:${NC}"  # Blue and bold text for the menu title
+    echo -e "${YELLOW}${BOLD}1)${NC} Execute all steps"        # Yellow and bold text for menu items
+    echo -e "${YELLOW}${BOLD}2)${NC} Add user to sudoers"
+    echo -e "${YELLOW}${BOLD}3)${NC} Install system updates and applications (mc, bashtop, glances, bpytop, snap, nmap, mate-system-monitor)"
+    echo -e "${YELLOW}${BOLD}4)${NC} Install ${BOLD}Wine${NC}"  # Yellow and bold text for menu items
+    echo -e "${YELLOW}${BOLD}5)${NC} Configure SSH server (generate keys, set port 3444)"
+    echo -e "${YELLOW}${BOLD}6)${NC} Install LAMB (Apache + MySQL + Email + PHP + domain h2.vladonai.com)"
+    echo -e "${YELLOW}${BOLD}7)${NC} Install additional development/administration tools (GCC, Python, Perl, Git, QT Creator, Arduino development tools, visual GIT tools)"
+    echo -e "${YELLOW}${BOLD}8)${NC} Configure security (iptables firewall, open ports for mail, 80, 443, ssh, fail2ban)"
+    echo -e "${YELLOW}${BOLD}9)${NC} Install VMWare Guest Additions"
+    echo -e "${YELLOW}${BOLD}10)${NC} Exit"
 }
 
 # Function to execute all steps
-function install_step_execute_all {
+function install_step_execute_all 
+{
     install_step_add_sudo_user
     update_packages
     install_step_install_apps
@@ -89,7 +101,8 @@ function install_step_install_wine {
 }
 
 # Function to configure SSH server
-function configure_ssh_server {
+function configure_ssh_server 
+{
     ssh-keygen -t rsa
     sudo sed -i 's/#Port 22/Port 3444/' /etc/ssh/sshd_config
     sudo systemctl restart ssh
@@ -97,7 +110,8 @@ function configure_ssh_server {
 }
 
 # Function to install LAMB stack
-function install_lamb_stack {
+function install_lamb_stack 
+{
     sudo apt-get install -y apache2 mysql-server php libapache2-mod-php
     sudo systemctl enable apache2
     sudo systemctl start apache2
@@ -130,7 +144,8 @@ function configure_security {
 }
 
 # Function to install VMWare Guest Additions
-function install_step_install_vmware_guest_additions {
+function install_step_install_vmware_guest_additions 
+{
     sudo apt-get install -y open-vm-tools-desktop
     echo "VMWare Guest Additions installed successfully."
 }
