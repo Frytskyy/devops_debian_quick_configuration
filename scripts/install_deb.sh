@@ -27,7 +27,7 @@ function show_menu
 
     # Menu items
     echo -e "${BLUE}${BOLD}Choose what you want to do:${NC}"  # Blue and bold text for the menu title
-    echo -e "${YELLOW}${BOLD}1)${NC} Execute$ {BOLD}all steps${NC}"        # Yellow and bold text for menu items
+    echo -e "${YELLOW}${BOLD}1)${NC} Execute ${BOLD}all steps${NC}"        # Yellow and bold text for menu items
     echo -e "${YELLOW}${BOLD}2)${NC} Add user to ${BOLD}sudoers${NC}"
     echo -e "${YELLOW}${BOLD}3)${NC} Install ${BOLD}system updates${NC} + ${BOLD}applications${NC} (mc, bashtop, glances, bpytop, snap, nmap, mate-system-monitor)"
     echo -e "${YELLOW}${BOLD}4)${NC} Install ${BOLD}Wine${NC}"  # Yellow and bold text for menu items
