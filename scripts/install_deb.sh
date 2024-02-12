@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# To llaunch this script use this command:
+# To launch this script use this command:
 #   bash install_deb.sh
+#
+# To make it executable:
+#   chmod +x install_deb.sh
+#
+# To clone this Gitrepository and edit locally, use this:
+#    git clone https://github.com/Frytskyy/devops_debian_quick_configuration
 #
 # Part of https://github.com/Frytskyy/devops_debian_quick_configuration/tree/main
 # MIT License
