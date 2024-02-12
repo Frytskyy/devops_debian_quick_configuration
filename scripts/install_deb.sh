@@ -82,7 +82,7 @@ function install_step_install_apps
     update_packages
 
 	#install Visual Studio Code:
-    echo "Installing Visual Studio Code..."
+        echo -e "Installing Visual Studio Code..."
 	wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 	sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
 	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
@@ -92,16 +92,16 @@ function install_step_install_apps
     #install other apps
     apps=(mc passwd bashtop glances bpytop snap nmap doublecmd-gtk mate-system-monitor)
     for app in "${apps[@]}"; do
-        echo "Installing $app..."
+        echo -e "Installing $app..."
         sudo apt-get install -y $app
     done
-    echo "Applications installed successfully."
+    echo -e "Applications installed successfully."
 }
 
 # Function to install Wine
 function install_step_install_wine {
     sudo apt-get install -y wine
-    echo "Wine installed successfully."
+    echo -e "Wine installed successfully."
 }
 
 # Function to configure SSH server
@@ -110,7 +110,7 @@ function configure_ssh_server
     ssh-keygen -t rsa
     sudo sed -i 's/#Port 22/Port 3444/' /etc/ssh/sshd_config
     sudo systemctl restart ssh
-    echo "SSH server configured. Port set to 3444."
+    echo -e "SSH server configured. Port set to 3444."
 }
 
 # Function to install LAMB stack
@@ -121,14 +121,14 @@ function install_lamb_stack
     sudo systemctl start apache2
     sudo apt-get install -y mailutils
     # Additional configuration for email setup goes here
-    echo "LAMB stack installed successfully."
+    echo -e "LAMB stack installed successfully."
 }
 
 # Function to install additional development/administration tools
 function install_additional_tools {
     sudo apt-get install -y gcc perl git qtcreator arduino python
     # Additional development tools installation goes here
-    echo "Additional development/administration tools installed successfully."
+    echo -e "Additional development/administration tools installed successfully."
 }
 
 # Function to configure security
@@ -144,14 +144,14 @@ function configure_security {
     # Install and configure fail2ban
     sudo apt-get install -y fail2ban
     # Additional security configurations go here
-    echo "Security configuration completed successfully."
+    echo -e "Security configuration completed successfully."
 }
 
 # Function to install VMWare Guest Additions
 function install_step_install_vmware_guest_additions 
 {
     sudo apt-get install -y open-vm-tools-desktop
-    echo "VMWare Guest Additions installed successfully."
+    echo -e "VMWare Guest Additions installed successfully."
 }
 
 # Main code
@@ -169,6 +169,6 @@ while true; do
         8) configure_security ;;
         9) install_step_install_vmware_guest_additions ;;
         q) break ;;
-        *) echo "Invalid choice. Please try again." ;;
+        *) echo -e "${YELLOW}Invalid choice. Please try again.${NC}" ;;
     esac
 done
