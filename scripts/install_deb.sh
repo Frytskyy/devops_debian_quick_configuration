@@ -176,7 +176,8 @@ function show_menu
 # Main code
 while true; do
     show_menu
-    read -p "Select an option (1-10, or q): " choice
+    echo -en "${BLUE}Select an option (1-10, or q):${NC} " 
+    read choice
     case $choice in
         1) install_step_execute_all ;;
         2) install_step_add_sudo_user ;;
