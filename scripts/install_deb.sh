@@ -3,7 +3,8 @@
 # To llaunch this script use this command:
 #   bash install_deb.sh
 #
-# Part of https://github.com/Frytskyy/devops_debian_quick_config/tree/main
+# Part of https://github.com/Frytskyy/devops_debian_quick_configuration/tree/main
+# MIT license
 
 # Function to update package lists
 function update_packages 
