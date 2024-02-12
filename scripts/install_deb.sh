@@ -8,6 +8,14 @@
 # Copyright (c) 1998-2024 Volodymyr Frytskyy (https://www.vladonai.com/about and https://www.vladonai.com/about-resume)
 
 
+# Color codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
 # Function to update package lists
 function update_packages 
 {
@@ -17,14 +25,6 @@ function update_packages
 # Function to display the menu
 function show_menu 
 {
-    # Color codes
-    RED='\033[0;31m'
-    GREEN='\033[0;32m'
-    YELLOW='\033[0;33m'
-    BLUE='\033[0;34m'
-    BOLD='\033[1m'
-    NC='\033[0m' # No Color
-
     # Menu items
     echo -e "${BLUE}${BOLD}Choose what you want to do:${NC}"  # Blue and bold text for the menu title
     echo -e "${YELLOW}${BOLD}1)${NC} Execute ${BOLD}all steps${NC}"        # Yellow and bold text for menu items
@@ -58,20 +58,20 @@ function install_step_add_sudo_user
     read -p "Enter the username to add to sudoers: " username
 
     if [ -z "$username" ]; then
-        echo "Error: Username cannot be empty."
+        echo "${RED}Error: Username cannot be empty.${NC}"
         return 1
     fi
     
     if ! id "$username" &>/dev/null; then
-        echo "Error: User '$username' does not exist."
+        echo "${RED}Error: User '$username' does not exist.${NC}"
         return 1
     fi
 
     sudo /usr/sbin/usermod -aG sudo $username
     if [ $? -eq 0 ]; then
-        echo "User $username added to sudoers."
+        echo "${GREEN}User $username added to sudoers.${NC}"
     else
-        echo "Error: Failed to add user $username to sudoers."
+        echo "${RED}Error: Failed to add user $username to sudoers.${NC}"
         return 1
     fi
 }
