@@ -58,20 +58,20 @@ function install_step_add_sudo_user
     read -p "Enter the username to add to sudoers: " username
 
     if [ -z "$username" ]; then
-        echo "${RED}Error: Username cannot be empty.${NC}"
+        echo -e "${RED}Error: Username cannot be empty.${NC}"
         return 1
     fi
     
     if ! id "$username" &>/dev/null; then
-        echo "${RED}Error: User '$username' does not exist.${NC}"
+        echo -e "${RED}Error: User '$username' does not exist.${NC}"
         return 1
     fi
 
     sudo /usr/sbin/usermod -aG sudo $username
     if [ $? -eq 0 ]; then
-        echo "${GREEN}User $username added to sudoers.${NC}"
+        echo -e "${GREEN}User $username added to sudoers.${NC}"
     else
-        echo "${RED}Error: Failed to add user $username to sudoers.${NC}"
+        echo -e "${RED}Error: Failed to add user $username to sudoers.${NC}"
         return 1
     fi
 }
