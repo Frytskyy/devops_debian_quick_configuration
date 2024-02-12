@@ -94,6 +94,7 @@ function install_step_install_wine
 # Function to configure SSH server
 function configure_ssh_server 
 {
+    echo -e "${GREEN}Configuring SSH server...${NC}"
     if ssh-keygen -t rsa && \
        sudo sed -i 's/#Port 22/Port 3444/' /etc/ssh/sshd_config && \
        sudo systemctl restart ssh; then
@@ -103,22 +104,80 @@ function configure_ssh_server
     fi
 }
 
-# Function to install LAMB stack
-function install_lamb_stack 
+# Function to install LAMB stack and configure web server
+function install_lamb_stack
 {
-    if sudo apt-get install -y apache2 mysql-server php libapache2-mod-php && \
-       sudo systemctl enable apache2 && \
-       sudo systemctl start apache2 && \
-       sudo apt-get install -y mailutils; then
-        echo -e "${GREEN}LAMB stack installed successfully.${NC}"
-    else
-        echo -e "${RED}Error: LAMB stack installation failed.${NC}"
-    fi
+    create_web_directory
+    create_user_and_email
+    configure_apache
+    configure_mysql
+    install_phpmyadmin
+    restart_lamb_services
+    echo -e "${GREEN}LAMB stack installed and configured successfully.${NC}"
+}
+
+# Function to create web directory
+function create_web_directory 
+{
+    echo -e "${GREEN}Creating web directories...${NC}"
+    sudo mkdir -p /home/admin/web/h2.vladonai.com/public_html
+    sudo chown -R admin:admin /home/admin/web/h2.vladonai.com
+    sudo chmod -R 755 /home/admin/web/h2.vladonai.com
+}
+
+# Function to create user and email account
+function create_user_and_email 
+{
+    echo -e "${GREEN}Creating 'admin' user...${NC}"
+    sudo adduser admin
+    # Set password for the user admin
+    sudo passwd admin
+    # Create email account
+    sudo useradd -m -s /bin/bash support
+    echo "support:h2.vladonai.com" | sudo chpasswd
+}
+
+# Function to configure Apache
+function configure_apache 
+{
+    echo -e "${GREEN}Configuring Apache...${NC}"
+    # Copy default configuration file and edit it
+    sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/h2.vladonai.com.conf
+    # Edit configuration file
+    sudo nano /etc/apache2/sites-available/h2.vladonai.com.conf
+    # Enable the new virtual host
+    sudo a2ensite h2.vladonai.com.conf
+    # Reload Apache to apply changes
+    sudo systemctl reload apache2
+}
+
+# Function to configure MySQL
+function configure_mysql 
+{
+    echo -e "${GREEN}Configuring MySQL server...${NC}"
+    # Secure MySQL installation
+    sudo mysql_secure_installation
+}
+
+# Function to install phpMyAdmin
+function install_phpmyadmin 
+{
+    echo -e "${GREEN}Installing MySQL's phpMyAdmin...${NC}"
+    sudo apt-get install -y phpmyadmin
+}
+
+# Function to restart services
+function restart_lamb_services 
+{
+    sudo systemctl restart apache2
+    sudo systemctl restart mysql
+    sudo systemctl restart postfix
 }
 
 # Function to install additional development/administration tools
 function install_additional_tools 
 {
+    echo -e "${GREEN}Installing Tools...${NC}"
     if sudo apt-get install -y gcc perl git qtcreator arduino python; then
         echo -e "${GREEN}Additional development/administration tools installed successfully.${NC}"
     else
@@ -129,6 +188,7 @@ function install_additional_tools
 # Function to configure security
 function configure_security 
 {
+    echo -e "${GREEN}Configuring security...${NC}"
     # Configure iptables
     # Open ports for mail, 80, 443, ssh
     # Install and configure fail2ban
@@ -148,6 +208,7 @@ function configure_security
 # Function to install VMWare Guest Additions
 function install_step_install_vmware_guest_additions 
 {
+    echo -e "${GREEN}Installing VMWare guest additions...${NC}"
     if sudo apt-get install -y open-vm-tools-desktop; then
         echo -e "${GREEN}VMWare Guest Additions installed successfully.${NC}"
     else
