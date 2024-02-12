@@ -8,6 +8,12 @@
 # Copyright (c) 1998-2024 Volodymyr Frytskyy (https://www.vladonai.com/about and https://www.vladonai.com/about-resume)
 
 
+# Define user-specific data (domain, port, etc)
+SSH_PORT=3444
+DOMAIN=h2.vladonai.com
+EMAIL=support@h2.vladonai.com
+
+
 # Color codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -96,9 +102,9 @@ function configure_ssh_server
 {
     echo -e "${GREEN}Configuring SSH server...${NC}"
     if ssh-keygen -t rsa && \
-       sudo sed -i 's/#Port 22/Port 3444/' /etc/ssh/sshd_config && \
+       sudo sed -i "s/#Port 22/Port $SSH_PORT/" /etc/ssh/sshd_config && \
        sudo systemctl restart ssh; then
-        echo -e "${GREEN}SSH server configured. Port set to 3444.${NC}"
+        echo -e "${GREEN}SSH server configured. Port set to $SSH_PORT.${NC}"
     else
         echo -e "${RED}Error: SSH server configuration failed.${NC}"
     fi
@@ -120,9 +126,9 @@ function install_lamb_stack
 function create_web_directory 
 {
     echo -e "${GREEN}Creating web directories...${NC}"
-    sudo mkdir -p /home/admin/web/h2.vladonai.com/public_html
-    sudo chown -R admin:admin /home/admin/web/h2.vladonai.com
-    sudo chmod -R 755 /home/admin/web/h2.vladonai.com
+    sudo mkdir -p /home/admin/web/$DOMAIN/public_html
+    sudo chown -R admin:admin /home/admin/web/$DOMAIN
+    sudo chmod -R 755 /home/admin/web/$DOMAIN
 }
 
 # Function to create user and email account
@@ -134,7 +140,7 @@ function create_user_and_email
     sudo passwd admin
     # Create email account
     sudo useradd -m -s /bin/bash support
-    echo "support:h2.vladonai.com" | sudo chpasswd
+    echo "support:$EMAIL" | sudo chpasswd
 }
 
 # Function to configure Apache
@@ -142,11 +148,11 @@ function configure_apache
 {
     echo -e "${GREEN}Configuring Apache...${NC}"
     # Copy default configuration file and edit it
-    sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/h2.vladonai.com.conf
+    sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/$DOMAIN.conf
     # Edit configuration file
-    sudo nano /etc/apache2/sites-available/h2.vladonai.com.conf
+    sudo nano /etc/apache2/sites-available/$DOMAIN.conf
     # Enable the new virtual host
-    sudo a2ensite h2.vladonai.com.conf
+    sudo a2ensite $DOMAIN.conf
     # Reload Apache to apply changes
     sudo systemctl reload apache2
 }
