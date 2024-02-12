@@ -8,8 +8,8 @@
 # Copyright (c) 1998-2024 Volodymyr Frytskyy (https://www.vladonai.com/about and https://www.vladonai.com/about-resume)
 
 
-# Define user-specific data (domain, port, etc)
-SSH_PORT=3444
+# Define your own user-specific data (domain, port, etc)
+SSH_PORT=2224
 DOMAIN=h2.vladonai.com
 EMAIL=support@h2.vladonai.com
 
@@ -202,13 +202,19 @@ function configure_security
        sudo iptables -A INPUT -p tcp --dport 25 -j ACCEPT && \
        sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT && \
        sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT && \
-       sudo iptables -A INPUT -p tcp --dport 3444 -j ACCEPT && \
-       sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT && \
+       sudo iptables -A INPUT -p tcp --dport $SSH_PORT -j ACCEPT && \
        sudo apt-get install -y fail2ban; then
+        # Configure fail2ban
+        sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+        sudo sed -i "s/#port    = ssh/port    = $SSH_PORT/" /etc/fail2ban/jail.local
+        sudo sed -i "s/#logpath  = %(sshd_log)s/logpath  = %(sshd_log)s/" /etc/fail2ban/jail.local
+        sudo sed -i "s/#bantime  = 10m/bantime  = 24h/" /etc/fail2ban/jail.local
+        sudo systemctl restart fail2ban
         echo -e "${GREEN}Security configuration completed successfully.${NC}"
     else
         echo -e "${RED}Error: Security configuration failed.${NC}"
     fi
+
 }
 
 # Function to install VMWare Guest Additions
