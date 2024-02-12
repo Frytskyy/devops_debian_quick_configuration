@@ -4,7 +4,9 @@
 #   bash install_deb.sh
 #
 # Part of https://github.com/Frytskyy/devops_debian_quick_configuration/tree/main
-# MIT license
+# MIT License
+# Copyright (c) 1998-2024 Volodymyr Frytskyy (https://www.vladonai.com/about and https://www.vladonai.com/about-resume)
+
 
 # Function to update package lists
 function update_packages 
