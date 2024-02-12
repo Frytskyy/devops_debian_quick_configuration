@@ -169,6 +169,6 @@ while true; do
         8) configure_security ;;
         9) install_step_install_vmware_guest_additions ;;
         q) break ;;
-        *) echo -e "${YELLOW}Invalid choice. Please try again.${NC}" ;;
+        *) echo -e "${RED}Invalid choice. Please try again.${NC}" ;;
     esac
 done
