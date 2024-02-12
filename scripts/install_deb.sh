@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#to llaunch this script use this command:
+# To llaunch this script use this command:
 #   bash install_deb.sh
-
+#
+# Part of https://github.com/Frytskyy/devops_debian_quick_config/tree/main
 
 # Function to update package lists
 function update_packages 
